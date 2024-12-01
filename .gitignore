@@ -19,11 +19,6 @@ build/
 # TypeScript cache and build info
 *.tsbuildinfo
 
-# Compiled JavaScript files from TypeScript in the source directory
-src/**/*.js
-src/**/*.js.map
-src/**/*.d.ts
-
 # Coverage directory (output of testing tools like Jest)
 coverage/
 
@@ -62,7 +57,3 @@ Thumbs.db
 
 # Build artifacts
 *.tgz
-
-# Lock files (include if you want to prevent tracking lock files)
-# package-lock.json
-# yarn.lock
