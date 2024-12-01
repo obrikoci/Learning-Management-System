@@ -20,8 +20,8 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
   
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN!);
-      req.user = decoded as IUser; // Attach user info to request
-      next(); // Move to the next middleware or route handler
+      req.user = decoded as IUser; 
+      next(); 
     } catch (err) {
       next(new ErrorHandler("Invalid or expired token", 401));
     }

@@ -34,20 +34,38 @@ const AdminUsers = () => {
   };
 
   if (error) {
-    return <div className="text-danger">{error}</div>;
+    return <div className="alert alert-danger">{error}</div>;
   }
 
   return (
-    <div>
-      <h1>Manage Users</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            {user.name} ({user.role})
-            <button onClick={() => handleDelete(user._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container mt-5">
+      <h1 className="mb-4">Manage Users</h1>
+      <div className="card shadow">
+        <div className="card-body">
+          {users.length === 0 ? (
+            <p className="text-muted">No users found.</p>
+          ) : (
+            <ul className="list-group">
+              {users.map((user) => (
+                <li
+                  key={user._id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <strong>{user.name}</strong> <span className="text-muted">({user.role})</span>
+                  </div>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(user._id)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

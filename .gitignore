@@ -12,6 +12,10 @@ yarn-error.log*
 .env
 .env.*.local
 
+!lms-frontend/
+!lms-frontend/**
+
+
 # TypeScript cache and build info
 *.tsbuildinfo
 

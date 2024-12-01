@@ -24,7 +24,7 @@ interface IActivationToken {
     const token = jwt.sign(
       { user, activationCode },
       process.env.ACTIVATION_SECRET as Secret,
-      { expiresIn: "5m" } // Token expires in 5 minutes
+      { expiresIn: "5m" } 
     );
   
     return { token, activationCode };
@@ -116,7 +116,6 @@ export const activateUser = CatchAsyncError(async (req: Request, res: Response, 
 
 // Login user
 export const loginUser = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-  console.log(123)
     const { email, password } = req.body;
   
     const user = await userModel.findOne({ email }).select("+password");

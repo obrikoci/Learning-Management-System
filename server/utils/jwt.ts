@@ -14,8 +14,8 @@ interface ITokenOptions {
 }
 
 // Parse environment variables with fallback values
-const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || '5', 10); // Default 5 minutes
-const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '7', 10); // Default 7 days
+const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || '5', 10); 
+const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '7', 10); 
 
 // Options for cookies
 export const accessTokenOptions: ITokenOptions = {
@@ -36,7 +36,6 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
   try {
     // Debug logs for development
     if (process.env.NODE_ENV !== 'production') {
-      console.log("User ID:", user.id);
     }
 
     const accessToken = user.SignAccessToken();
@@ -47,7 +46,7 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
     }
 
     // Upload session to Redis
-    redis.set(user.id, JSON.stringify(user), 'EX', refreshTokenOptions.maxAge / 1000); // Set TTL based on cookie maxAge
+    redis.set(user.id, JSON.stringify(user), 'EX', refreshTokenOptions.maxAge / 1000); 
 
     // Apply secure settings for production
     if (process.env.NODE_ENV === "production") {
@@ -89,7 +88,7 @@ export const verifyToken = (token: string): DecodedToken => {
   try {
     // Verify the token with the secret key
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-    return decoded; // Return the decoded token payload
+    return decoded; 
   } catch (error) {
     throw new Error("Invalid or expired token");
   }

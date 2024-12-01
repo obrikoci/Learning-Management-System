@@ -72,32 +72,32 @@ const lectureSchema = new mongoose_1.Schema({
         required: true,
     },
     videoLength: {
-        type: Number, // Optional length in minutes
+        type: Number, 
     },
 }, { timestamps: true });
 // Define the Course Schema
 const courseSchema = new mongoose_1.Schema({
     title: {
         type: String,
-        required: true, // Title is mandatory
+        required: true, 
     },
     description: {
         type: String,
-        required: true, // Description is mandatory
+        required: true, 
     },
     instructor: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User", // Reference to the teacher who created it
+        ref: "User", 
         required: true,
     },
     enrolledStudents: [
         {
             type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "User", // Reference to students who enrolled
+            ref: "User", 
         },
     ],
-    lectures: [lectureSchema], // Array of lectures
-    comments: [commentSchema], // Array of comments
+    lectures: [lectureSchema], 
+    comments: [commentSchema], 
 }, { timestamps: true });
 // Create and export the Course model
 const CourseModel = mongoose_1.default.model("Course", courseSchema);

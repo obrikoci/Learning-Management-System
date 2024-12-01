@@ -31,7 +31,7 @@ process.on("unhandledRejection", (reason) => {
 // Initialize the server and database connection
 (async () => {
     try {
-        await connectDB(); // Connect to the database
+        await connectDB(); 
         app.listen(process.env.PORT, () => {
             console.log(`Server is running on port ${process.env.PORT}`);
         });

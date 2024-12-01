@@ -12,8 +12,8 @@ import CreateCourse from "./components/Courses/CreateCourse";
 import EditCourse from "./components/Courses/EditCourse";
 import CourseList from "./components/Courses/CourseList";
 import CourseDetails from "./components/Courses/CourseDetails";
-import AdminUsers from "./components/Admin/AdminUsers"; // Import AdminUsers
-import AdminCourses from "./components/Admin/AdminCourses"; // Import AdminCourses
+import AdminUsers from "./components/Admin/AdminUsers"; 
+import AdminCourses from "./components/Admin/AdminCourses"; 
 import { UserContext } from "./context/UserContext";
 import ActivateAccount from "./components/Auth/ActivateAcc";
 import axios from "axios";
@@ -35,15 +35,13 @@ const App = () => {
   useEffect(() => {
     const verifyUser = async () => {
       const token = localStorage.getItem("token");
-      // console.log(token)
       if (token) {
         try {
-          const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/me`, {
+          await axios.get(`${process.env.REACT_APP_API_URL}/users/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          // console.log("Logged-in user:", data.user);
         } catch (error) {
           console.error("Failed to verify user:", error);
         }
@@ -91,7 +89,7 @@ const App = () => {
           />
           {/* Student-Specific Routes */}
           <Route
-            path="/student-page"
+            path="/student/courses"
             element={
               <ProtectedRoute roles={["student"]}>
                 <StudentPage />

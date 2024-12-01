@@ -25,33 +25,42 @@ const CreateCourse = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Create a New Course</h2>
-      {error && <p className="text-danger">{error}</p>}
-      {success && <p className="text-success">{success}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">Course Title</label>
-          <input
-            type="text"
-            id="title"
-            className="form-control"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            required
-          />
+      <div className="card shadow">
+        <div className="card-body">
+          <h2 className="text-center mb-4 text-primary">Create a New Course</h2>
+          {error && <div className="alert alert-danger">{error}</div>}
+          {success && <div className="alert alert-success">{success}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">Course Title</label>
+              <input
+                type="text"
+                id="title"
+                className="form-control"
+                placeholder="Enter course title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">Course Description</label>
+              <textarea
+                id="description"
+                className="form-control"
+                placeholder="Enter course description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <div className="text-center">
+              <button type="submit" className="btn btn-primary w-50">Create Course</button>
+            </div>
+          </form>
         </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">Course Description</label>
-          <textarea
-            id="description"
-            className="form-control"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="btn btn-primary">Create Course</button>
-      </form>
+      </div>
     </div>
   );
 };

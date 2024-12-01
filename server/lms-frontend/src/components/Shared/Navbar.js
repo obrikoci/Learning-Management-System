@@ -26,7 +26,7 @@ const Navbar = () => {
     };
 
     verifyUser();
-  },[setUser]);
+  }, [setUser]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -35,30 +35,37 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand fw-bold" to="/">
           LMS Platform
         </Link>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav ml-auto">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto align-items-center">
             {user?.role === "student" && (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/student/courses">
-                    My Courses
-                  </Link>
-                </li>
-              </>
+              <li className="nav-item">
+                <Link className="nav-link" to="/student/courses">
+                  My Courses
+                </Link>
+              </li>
             )}
             {user?.role === "teacher" && (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/teacher-dashboard">
-                    Dashboard
-                  </Link>
-                </li>
-              </>
+              <li className="nav-item">
+                <Link className="nav-link" to="/teacher-dashboard">
+                  Dashboard
+                </Link>
+              </li>
             )}
             {user?.role === "admin" && (
               <>
@@ -76,7 +83,10 @@ const Navbar = () => {
             )}
             {user && (
               <li className="nav-item">
-                <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+                <button
+                  className="btn btn-danger btn-sm ms-3"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </li>

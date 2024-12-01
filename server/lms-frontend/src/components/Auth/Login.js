@@ -12,9 +12,9 @@ const Login = () => {
       const response = await API.post("/login", { email, password });
       // Handle successful login (e.g., save token and redirect)
       localStorage.setItem("token", response.data.accessToken);
-      localStorage.setItem("role", response.data.role); // Save user role for role-based access
+      localStorage.setItem("role", response.data.role); 
       alert("Login successful!");
-      window.location.href = "/dashboard"; // Redirect after login
+      window.location.href = "/dashboard"; 
     } catch (error) {
       const errorMsg = error.response?.data?.message || "Login failed. Please check credentials.";
       alert(errorMsg);
@@ -34,8 +34,8 @@ const Login = () => {
             className="form-control"
             id="email"
             placeholder="Enter your email"
-            value={email} // Bind value to state
-            onChange={(e) => setEmail(e.target.value)} // Update state on input change
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
           />
         </div>
         <div className="mb-3">
@@ -47,8 +47,8 @@ const Login = () => {
             className="form-control"
             id="password"
             placeholder="Enter your password"
-            value={password} // Bind value to state
-            onChange={(e) => setPassword(e.target.value)} // Update state on input change
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
           />
         </div>
         <button type="submit" className="btn btn-primary w-100">

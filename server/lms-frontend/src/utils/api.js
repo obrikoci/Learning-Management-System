@@ -5,7 +5,7 @@ const API = axios.create({
   withCredentials: true, 
 });
 
-// Add a request interceptor to attach the token to every request
+// request interceptor to attach the token to every request
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -37,10 +37,11 @@ export const logoutUser = () => API.get("/logout");
 
 // Course API Endpoints
 export const fetchAllCourses = () => API.get("/get-courses");
-export const fetchCourseDetails = (id) => API.get(`/get-course/${id}`);
+export const fetchCourseDetails = (id) => API.get(`/courses/get-course/${id}`);
 export const createCourse = (data) => API.post("/create-course", data);
 export const editCourse = (id, data) => API.put(`/edit-course/${id}`, data);
 export const enrollInCourse = (id) => API.post(`/enroll/${id}`);
+export const getStudentCourses = (data) => API.get("/student/courses", data);
 export const fetchCourseContent = (id) => API.get(`/get-course-content/${id}`);
 export const addQuestion = (data) => API.put(`/add-question`, data);
 export const addAnswer = (data) => API.put(`/add-answer`, data);

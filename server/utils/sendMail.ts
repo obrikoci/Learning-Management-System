@@ -27,7 +27,6 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
   
     let renderedHtml = html;
   
-    // If a template is provided, render it
     if (template) {
       const templatePath = path.join(__dirname, '../mails', template);
       renderedHtml = await ejs.renderFile(templatePath, data || {});
@@ -37,8 +36,8 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
       from: process.env.SMTP_MAIL,
       to: email,
       subject,
-      html: renderedHtml, // Use the rendered HTML or directly provided HTML
-      text: options.text, // Fallback to plain text if available
+      html: renderedHtml, 
+      text: options.text,
     };
   
     await transporter.sendMail(mailOptions);

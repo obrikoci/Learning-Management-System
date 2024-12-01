@@ -12,15 +12,15 @@ const refreshAccessToken = (req, res, next) => {
         return res.status(401).json({ message: "Refresh token is missing" });
     }
     try {
-        const decoded = (0, jwt_1.verifyToken)(refreshToken); // Validate the refresh token
-        const newAccessToken = jsonwebtoken_1.default.sign({ id: decoded.id, role: decoded.role }, // Payload for new access token
-        process.env.JWT_SECRET, // Use the JWT_SECRET
-        { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRE}m` } // Expiration for access token
+        const decoded = (0, jwt_1.verifyToken)(refreshToken);
+        const newAccessToken = jsonwebtoken_1.default.sign({ id: decoded.id, role: decoded.role }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRE}m` } 
         );
         res.status(200).json({ success: true, accessToken: newAccessToken });
     }
     catch (err) {
-        return next(err); // Pass the error to Express's error handler
+        return next(err); 
     }
 };
 exports.refreshAccessToken = refreshAccessToken;

@@ -15,8 +15,8 @@ const isAuthenticated = (req, res, next) => {
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // Attach user info to request
-        next(); // Move to the next middleware or route handler
+        req.user = decoded; 
+        next(); 
     }
     catch (err) {
         next(new ErrorHandler_1.default("Invalid or expired token", 401));

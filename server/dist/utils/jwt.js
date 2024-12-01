@@ -27,7 +27,6 @@ const sendToken = (user, statusCode, res) => {
     try {
         // Debug logs for development
         if (process.env.NODE_ENV !== 'production') {
-            console.log("User ID:", user.id);
         }
         const accessToken = user.SignAccessToken();
         const refreshToken = user.SignRefreshToken();
@@ -35,7 +34,7 @@ const sendToken = (user, statusCode, res) => {
             throw new Error("Failed to generate access or refresh token.");
         }
         // Upload session to Redis
-        redis_1.redis.set(user.id, JSON.stringify(user), 'EX', exports.refreshTokenOptions.maxAge / 1000); // Set TTL based on cookie maxAge
+        redis_1.redis.set(user.id, JSON.stringify(user), 'EX', exports.refreshTokenOptions.maxAge / 1000); 
         // Apply secure settings for production
         if (process.env.NODE_ENV === "production") {
             exports.accessTokenOptions.secure = true;

@@ -3,6 +3,7 @@ import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import CourseModel from "../models/course.model";
 import mongoose from "mongoose";
+import userModel from "../models/user.model";
 
 // Upload course (for teachers only)
 export const uploadCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
@@ -60,8 +61,9 @@ export const editCourse = CatchAsyncError(async (req: Request, res: Response, ne
 
 // Enroll in course (for students only)
 export const enrollInCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params; // Course ID
-    const userId = req.user?._id as mongoose.Types.ObjectId;
+    const { id } = req.params;
+    const userId = req.user?.id as mongoose.Types.ObjectId;
+    const user = await userModel.findById(userId);
 
     const course = await CourseModel.findById(id);
     if (!course) return next(new ErrorHandler("Course not found", 404));
@@ -81,6 +83,14 @@ export const enrollInCourse = CatchAsyncError(async (req: Request, res: Response
     course.enrolledStudents.push(userId);
     await course.save();
 
+    if (user) {
+        if (user.courses === undefined) {
+            user.courses = [];
+        }
+        user.courses.push(course.id);
+        await user.save();
+    }
+
     res.status(200).json({
         success: true,
         message: "Successfully enrolled in the course",
@@ -88,7 +98,7 @@ export const enrollInCourse = CatchAsyncError(async (req: Request, res: Response
 });
 
 
-// Get course details (public access)
+// Get course details 
 export const getCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     const courseId = req.params.id;
 
@@ -119,7 +129,7 @@ export const getAllCourses = CatchAsyncError(async (req: Request, res: Response,
 
 // Get teacher's courses
 export const getTeacherCourses = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const teacherId = req.user?._id;
+    const teacherId = req.user?.id;
 
     if (!req.user || req.user.role !== "teacher") {
         return next(new ErrorHandler("Only teachers can view their courses", 403));
@@ -135,20 +145,20 @@ export const getTeacherCourses = CatchAsyncError(async (req: Request, res: Respo
 
 // Get student's enrolled courses
 export const getStudentCourses = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const studentId = req.user?._id;
-
+    const studentId = req.user?.id;
+  
     if (!req.user || req.user.role !== "student") {
-        return next(new ErrorHandler("Only students can view their enrolled courses", 403));
+      return next(new ErrorHandler("Only students can view their enrolled courses", 403));
     }
 
     const courses = await CourseModel.find({ enrolledStudents: studentId });
-
+  
     res.status(200).json({
-        success: true,
-        courses,
+      success: true,
+      courses,
     });
-});
-
+  });
+  
 // Delete course (for admin only)
 export const deleteCourse = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user || req.user.role !== "admin") {

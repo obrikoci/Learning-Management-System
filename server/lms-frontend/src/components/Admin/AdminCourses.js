@@ -32,20 +32,36 @@ const AdminCourses = () => {
   };
 
   if (error) {
-    return <div className="text-danger">{error}</div>;
+    return <div className="alert alert-danger">{error}</div>;
   }
 
   return (
-    <div>
-      <h1>Manage Courses</h1>
-      <ul>
-        {courses.map((course) => (
-          <li key={course._id}>
-            {course.name}
-            <button onClick={() => handleDelete(course._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container mt-5">
+      <h1 className="mb-4">Manage Courses</h1>
+      <div className="card shadow">
+        <div className="card-body">
+          {courses.length === 0 ? (
+            <p className="text-muted">No courses available.</p>
+          ) : (
+            <ul className="list-group">
+              {courses.map((course) => (
+                <li
+                  key={course._id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span>{course.title}</span>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(course._id)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

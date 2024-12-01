@@ -21,7 +21,7 @@ const userRouter = express.Router();
  * @route POST /registration
  * @desc Register a new user
  * @access Public
- */
+ */ 
 userRouter.post(
     '/registration',
     [

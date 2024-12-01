@@ -23,10 +23,4 @@ exports.app.use("/api/v1/users", user_route_1.default);
 exports.app.use("/api/v1/auth", authRoutes_1.default);
 // Error Middleware
 exports.app.use(error_1.ErrorMiddleware);
-// Connect to Database and Start Server
-// connectDB()
-//   .then(() => {
-//     const PORT = process.env.PORT || 8080;
-//     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-//   })
-//   .catch((error) => console.error("Database connection failed:", error));
+

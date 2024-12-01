@@ -52,8 +52,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     },
     courses: [
         {
-            type: mongoose.Schema.Types.ObjectId, // Reference to Course IDs
-            ref: 'Course', // Reference to the Course model
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Course', 
         },
     ],
 }, { timestamps: true });

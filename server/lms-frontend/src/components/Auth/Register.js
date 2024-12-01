@@ -3,8 +3,8 @@ import API from "../../utils/api";
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "", role: "student" });
-  const [error, setError] = useState(""); // State for error message
-  const [success, setSuccess] = useState(""); // State for success message
+  const [error, setError] = useState(""); 
+  const [success, setSuccess] = useState(""); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

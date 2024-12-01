@@ -10,16 +10,16 @@ export const refreshAccessToken = (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const decoded = verifyToken(refreshToken); // Validate the refresh token
+    const decoded = verifyToken(refreshToken); 
     const newAccessToken = jwt.sign(
-      { id: decoded.id, role: decoded.role }, // Payload for new access token
-      process.env.JWT_SECRET!, // Use the JWT_SECRET
-      { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRE}m` } // Expiration for access token
+      { id: decoded.id, role: decoded.role }, 
+      process.env.JWT_SECRET!, 
+      { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRE}m` } 
     );
 
     res.status(200).json({ success: true, accessToken: newAccessToken });
   } catch (err) {
-    return next(err); // Pass the error to Express's error handler
+    return next(err); 
   }
 };
 

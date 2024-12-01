@@ -16,7 +16,7 @@ const ActivateAccount = () => {
     const activationToken = searchParams.get("token"); 
 
     try {
-      const response = await API.post("/activate-user", {
+      const response = await API.post("/users/activate-user", {
         activation_token: activationToken,
         activation_code: activationCode,
       });

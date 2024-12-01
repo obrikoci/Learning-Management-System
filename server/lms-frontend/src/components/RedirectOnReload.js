@@ -7,11 +7,11 @@ const RedirectOnReload = () => {
   useEffect(() => {
     const savedPage = localStorage.getItem("currentPage");
     if (savedPage) {
-      navigate(savedPage); // Navigate to the saved page
+      navigate(savedPage); 
     }
   }, [navigate]);
 
-  return null; // This component doesn’t render anything
+  return null; 
 };
 
 export default RedirectOnReload;

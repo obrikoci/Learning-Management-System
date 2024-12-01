@@ -9,38 +9,41 @@ const EditCourse = () => {
   const { user } = useContext(UserContext);
 
   const [course, setCourse] = useState({
-    name: "",
+    title: "",
     description: "",
-    prerequisites: [],
-    benefits: [],
-    courseData: [],
   });
+
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // Check if user has the right role
     if (!["teacher", "admin"].includes(user?.role)) {
       alert("Only teachers and admins can edit courses.");
-      navigate("/"); // Redirect unauthorized users
+      navigate("/");
       return;
     }
 
     // Fetch course data
     const fetchCourse = async () => {
       try {
-        const response = await API.get(`/courses/${id}`);
+        const response = await API.get(`/courses/get-course/${id}`);
         const fetchedCourse = response.data.course;
 
         // Check if teacher is trying to edit their own course
-        if (user.role === "teacher" && user._id !== fetchedCourse.instructor._id) {
+        if (user.role === "teacher" && user.id !== fetchedCourse.instructor._id) {
           alert("You can only edit your own courses.");
-          navigate("/courses"); // Redirect unauthorized teachers
+          navigate("/");
           return;
         }
 
-        setCourse(fetchedCourse);
+        setCourse({
+          title: fetchedCourse.title,
+          description: fetchedCourse.description,
+        });
       } catch (error) {
+        console.error("Error fetching course details:", error);
         alert("Failed to fetch course details.");
-        navigate("/courses"); // Redirect if course fetch fails
+        navigate("/");
       }
     };
 
@@ -51,11 +54,15 @@ const EditCourse = () => {
     e.preventDefault();
 
     try {
-      await API.put(`/edit-course/${id}`, course);
+      const token = localStorage.getItem("token");
+      await API.put(`/courses/edit-course/${id}`, course, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       alert("Course updated successfully!");
-      navigate("/courses");
+      navigate("/");
     } catch (error) {
-      alert("Failed to update the course.");
+      console.error("Error updating course:", error);
+      setError(error.response?.data?.message || "Failed to update the course.");
     }
   };
 
@@ -65,34 +72,48 @@ const EditCourse = () => {
   };
 
   return (
-    <div>
-      <h1>Edit Course</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Course Name</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            value={course.name}
-            onChange={handleChange}
-            required
-          />
+    <div className="container mt-5">
+      <div className="card shadow">
+        <div className="card-body">
+          <h1 className="text-center text-primary mb-4">Edit Course</h1>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">
+                Course Title
+              </label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                className="form-control"
+                value={course.title}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Course Description
+              </label>
+              <textarea
+                name="description"
+                id="description"
+                className="form-control"
+                value={course.description}
+                onChange={handleChange}
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <div className="text-center">
+              <button type="submit" className="btn btn-primary w-50">
+                Update Course
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="form-group">
-          <label>Course Description</label>
-          <textarea
-            name="description"
-            className="form-control"
-            value={course.description}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary mt-3">
-          Update Course
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

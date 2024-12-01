@@ -37,8 +37,8 @@ const sendMail = (options) => __awaiter(void 0, void 0, void 0, function* () {
         from: process.env.SMTP_MAIL,
         to: email,
         subject,
-        html: renderedHtml, // Use the rendered HTML or directly provided HTML
-        text: options.text, // Fallback to plain text if available
+        html: renderedHtml, 
+        text: options.text, 
     };
     yield transporter.sendMail(mailOptions);
 });

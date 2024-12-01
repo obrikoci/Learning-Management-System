@@ -8,7 +8,7 @@ const TrackPage = () => {
     localStorage.setItem("currentPage", location.pathname);
   }, [location]);
 
-  return null; // This component doesn’t render anything
+  return null; 
 };
 
 export default TrackPage;

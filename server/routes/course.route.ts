@@ -39,14 +39,14 @@ courseRouter.put(
 
 /**
  * @route GET /get-course/:id
- * @desc Get details of a specific course (public access)
+ * @desc Get details of a specific course 
  * @access Public
  */
 courseRouter.get("/get-course/:id", getCourse);
 
 /**
  * @route GET /get-courses
- * @desc Get all courses (public access)
+ * @desc Get all courses 
  * @access Public
  */
 courseRouter.get("/get-courses", getAllCourses);
