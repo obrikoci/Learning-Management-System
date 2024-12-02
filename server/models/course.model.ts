@@ -9,11 +9,13 @@ interface IComment extends Document {
 }
 
 // Define the ILecture interface
-interface ILecture extends Document {
-  title: string;
-  description: string;
-  videoUrl: string;
-  videoLength?: number; 
+interface ILecture {
+  title?: string;
+  description?: string;
+  filePath?: string; 
+  originalName?: string;
+  _id?: mongoose.Types.ObjectId; 
+
 }
 
 // Define the ICourse interface
@@ -58,19 +60,20 @@ const lectureSchema = new Schema<ILecture>(
   {
     title: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
-    videoUrl: {
-      type: String,
-      required: true,
+    filePath: { 
+      type: String, 
+      required: true, 
     },
-    videoLength: {
-      type: Number,
-    },
+      originalName: { 
+        type: String, 
+        required: false, 
+      },
   },
   { timestamps: true }
 );

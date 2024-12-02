@@ -5,11 +5,11 @@ import { UserContext } from "../../context/UserContext";
 
 const CourseDetails = () => {
   const { user } = useContext(UserContext);
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [enrollMessage, setEnrollMessage] = useState(""); 
+  const [enrollMessage, setEnrollMessage] = useState("");
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -18,7 +18,7 @@ const CourseDetails = () => {
           `${process.env.REACT_APP_API_URL}/courses/get-course/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, 
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -37,11 +37,11 @@ const CourseDetails = () => {
   const handleEnroll = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/courses/enroll/${id}`, 
-        {}, 
+        `${process.env.REACT_APP_API_URL}/courses/enroll/${id}`,
+        {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, 
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -73,6 +73,13 @@ const CourseDetails = () => {
     return <div className="alert alert-warning text-center">No course found.</div>;
   }
 
+  const isEnrolled =
+    course.enrolledStudents &&
+    course.enrolledStudents.some((student) => student._id === user?.id);
+
+  const canViewLectures =
+    user?.role === "teacher" || user?.role === "admin" || isEnrolled;
+
   return (
     <div className="container mt-5">
       <div className="card shadow">
@@ -84,6 +91,38 @@ const CourseDetails = () => {
           <p>
             <strong>Instructor:</strong> {course.instructor?.name || "Unknown"}
           </p>
+
+          {canViewLectures && course.lectures && course.lectures.length > 0 ? (
+            <>
+              <h3 className="mt-4">Lectures</h3>
+              <ul className="list-group">
+                {course.lectures.map((lecture, index) => (
+                  <li
+                    key={index}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <span>{lecture.originalName}</span>
+                    <a
+                      href={lecture.filePath}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline-success btn-sm"
+                      download={lecture.originalName}
+                    >
+                      Download
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : canViewLectures ? (
+            <p className="text-muted">No lectures available.</p>
+          ) : (
+            <p className="text-muted">
+              You need to enroll in this course to view the lectures.
+            </p>
+          )}
+
           {course.courseData && course.courseData.length > 0 ? (
             <>
               <h3 className="mt-4">Course Content</h3>
@@ -112,7 +151,7 @@ const CourseDetails = () => {
               </ul>
             </>
           ) : (
-            <p className="text-muted">No course content available.</p>
+            <p className="text-muted">No other course content available.</p>
           )}
 
           {user?.role === "student" && (
@@ -120,7 +159,7 @@ const CourseDetails = () => {
               <button
                 className="btn btn-primary mt-4"
                 onClick={handleEnroll}
-                disabled={!!enrollMessage} 
+                disabled={!!enrollMessage}
               >
                 Enroll
               </button>

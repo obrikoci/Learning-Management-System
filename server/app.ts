@@ -7,6 +7,7 @@ import courseRoutes from "./routes/course.route";
 import userRoutes from "./routes/user.route";
 import { ErrorMiddleware } from "./middleware/error";
 import authRoutes from "./routes/authRoutes";
+import path = require("path");
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.post('/api/v1/test', (req, res) => {
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Error Middleware
 app.use(ErrorMiddleware);

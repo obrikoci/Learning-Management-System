@@ -11,9 +11,11 @@ const EditCourse = () => {
   const [course, setCourse] = useState({
     title: "",
     description: "",
+    lectures: [], 
   });
 
   const [error, setError] = useState("");
+  const [lectureFile, setLectureFile] = useState(null); 
 
   useEffect(() => {
     // Check if user has the right role
@@ -39,6 +41,7 @@ const EditCourse = () => {
         setCourse({
           title: fetchedCourse.title,
           description: fetchedCourse.description,
+          lectures: fetchedCourse.lectures || [],
         });
       } catch (error) {
         console.error("Error fetching course details:", error);
@@ -55,9 +58,22 @@ const EditCourse = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await API.put(`/courses/edit-course/${id}`, course, {
-        headers: { Authorization: `Bearer ${token}` },
+
+      // Prepare form data
+      const formData = new FormData();
+      formData.append("title", course.title);
+      formData.append("description", course.description);
+      if (lectureFile) {
+        formData.append("lectureFile", lectureFile); 
+      }
+
+      await API.put(`/courses/edit-course/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       alert("Course updated successfully!");
       navigate("/");
     } catch (error) {
@@ -69,6 +85,10 @@ const EditCourse = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCourse({ ...course, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setLectureFile(e.target.files[0]); 
   };
 
   return (
@@ -105,6 +125,17 @@ const EditCourse = () => {
                 rows="5"
                 required
               ></textarea>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="lectureFile" className="form-label">
+                Upload Lecture File
+              </label>
+              <input
+                type="file"
+                id="lectureFile"
+                className="form-control"
+                onChange={handleFileChange}
+              />
             </div>
             <div className="text-center">
               <button type="submit" className="btn btn-primary w-50">
